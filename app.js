@@ -6,8 +6,26 @@ const app = express();
 app.use(express.json());
 
 /**** Lista Todos  */
-app.get("/users", async (req, res) => {
+app.get("/users/all", async (req, res) => {
     await Usuario.findAll()
+    .then((users) => {
+        return res.json({
+            erro: false,
+            users
+        });
+    })
+    .catch(() => {
+        return res.status(400).json({
+            erro: true,
+            mensagem: ":( Nenhum usuário encontrado"
+        });
+    })
+});
+/**** Lista Todos Personalizados  */
+app.get("/users", async (req, res) => {
+    await Usuario.findAll({
+        attributes: ['id', 'name', 'email', 'password'],
+        order: [['id', 'desc']]})
     .then((users) => {
         return res.json({
             erro: false,
@@ -41,7 +59,7 @@ app.get("/user/:id", async (req, res) => {
 });
 /**** Cadastra  */
 app.post("/user", async (req, res) => {
-    const { name, email } = req.body;
+    const { name, email, password } = req.body;
     await Usuario.create(req.body)
     .then(()  => { 
         return res.json({

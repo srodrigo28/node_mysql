@@ -9,6 +9,7 @@
 * [x] Nodemon   | npm i --save-dev nodemon
 * [x] Sequelize | npm i --save sequelize
 * [x] Mysql     | npm i --save mysql2
+* [x] Bcrypt    | npm i --save bcryptjs
 
 ### Sequelize
 * Principais bancos

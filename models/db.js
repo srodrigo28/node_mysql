@@ -6,11 +6,6 @@ const password = "";
 const host = "localhost";
 const driver = "mysql";
 
-// const sequelize = new Sequelize('celke', 'root', '', {
-//     host: 'localhost',
-//     dialect: 'mysql'
-// });
-
 const sequelize = new Sequelize(banco, user, password, {
     host: host,
     dialect: driver

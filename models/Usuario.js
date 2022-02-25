@@ -15,9 +15,14 @@ const Usuario = db.define('users',{
     email:{
         type: Sequelize.STRING,
         allowNull: false,
+    },
+    password:{
+        type: Sequelize.STRING
     }
 });
 
+
+// Usuario.sync({ alter: true });  //alterar tabela
 Usuario.sync();
 
 module.exports = Usuario;
