@@ -8,9 +8,11 @@
 * Express
 * Nodemon
 * Mysql
+* 
 
 ## Dependencias
 * express
     * npm i express
 * nodemon
     * npm i --save-dev nodemon
+* npm i --save sequelize
