@@ -18,7 +18,7 @@
     * sqlite3
     * Microsoft SQL Server
 ### Sequencia do Projeto
-    [x] Criar estancia do express
-    [x] Criar Pastas models
-    [x] Criar conexao arquivo models/db.js
-    [x] Criar rota cadastrar
+[x] Criar estancia do express
+[x] Criar Pastas models
+[x] Criar conexao arquivo models/db.js
+[x] Criar rota cadastrar
