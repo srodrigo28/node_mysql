@@ -8,7 +8,6 @@
 * Express
 * Nodemon
 * Mysql
-* 
 
 ## Dependencias
 * express
