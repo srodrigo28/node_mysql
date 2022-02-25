@@ -4,14 +4,8 @@
 * https://celke.com.br/clms/aula-curso/view/4138
 
 ## Tecnologias
-* NodeJS v14
-* Express
-* Nodemon
+* [x] NodeJS v14
+* [x] Express | npm i express
+* [x] Nodemon | npm i --save-dev nodemon
+* [ ] Sequelize | npm i --save sequelize
 * Mysql
-
-## Dependencias
-* express
-    * npm i express
-* nodemon
-    * npm i --save-dev nodemon
-* npm i --save sequelize
