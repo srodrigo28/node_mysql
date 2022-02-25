@@ -1,3 +1,7 @@
+-- Chamando uma estancia do mysl
+    mysql -h localhost -u root -p
+-- Comando Exibir todos bancos criados
+    SHOW DATABASES
 -- Comando para alterar a senha mestre do banco
     ALTER USER 'root'@'localhost' IDENTIFIED VIA mysql_native_password USING PASSWORD('123');
 -- Comando para criar uma base de dados simples
