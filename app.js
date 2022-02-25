@@ -5,21 +5,39 @@ const app = express();
 
 app.use(express.json());
 
-app.get("/", (req, res) => {
-    return res.json({
-        erro: false,
-        nome: "Rodrigo",
-        email: "rodrigoexer1@gmail.com"
-    });
+app.get("/users", async (req, res) => {
+    await Usuario.findAll()
+    .then((users) => {
+        return res.json({
+            erro: false,
+            users
+        });
+    })
+    .catch(() => {
+        return res.status(400).json({
+            erro: true,
+            mensagem: ":( Nenhum usuário encontrado"
+        });
+    })
 });
 
-app.get("/usuario/:id", (req, res) => {
+app.get("/user/:id", async (req, res) => {
     const {id} = req.params;
-    return res.json({
-        erro: false,
-        id, name: "ana cicilia", email: "anaci@bol.com"
-    })
-})
+    //await Usuario.findAll({ where: { id: id } })
+    await Usuario.findByPk(id)
+    .then((user) =>  {
+        return res.json({
+            erro: false,
+            user: user
+        });
+     } )
+    .catch(() => {
+        return res.status(400).json({
+            erro: true,
+            mensagem: ":( Nenhum usuário encontrado"
+        });
+     } )
+});
 
 app.post("/user", async (req, res) => {
     const { name, email } = req.body;
@@ -31,14 +49,12 @@ app.post("/user", async (req, res) => {
         })
     })
     .catch(() => {
-    return res.status(400).json({
-        erro: true,
-        mensagem: ":( Não salvo"
-    });
+        return res.status(400).json({
+            erro: true,
+            mensagem: ":( Não salvo"
+        });
     });
 });
-
-
 
 app.listen(8080, () => {
     console.log("Servidor iniciado na porta 8080")
