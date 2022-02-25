@@ -1,6 +1,6 @@
 const express = require("express"); // chama o express para subir o nodemon
-const db = require('./models/db'); // chama o arquivo de conexão
-
+// const db = require('./models/db'); // chama o arquivo de conexão
+const Usuario = require('./models/Usuario');
 const app = express();
 
 app.get("/", (req, res) => {
