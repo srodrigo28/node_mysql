@@ -1,6 +1,7 @@
 const express = require("express"); // chama o express para subir o nodemon
 // const db = require('./models/db'); // chama o arquivo de conexão
 const Usuario = require('./models/Usuario');
+const bcrypt = require('bcryptjs');
 const app = express();
 
 app.use(express.json());
@@ -58,7 +59,7 @@ app.get("/user/:id", async (req, res) => {
      } )
 });
 /**** Cadastra  */
-app.post("/user", async (req, res) => {
+app.post("/user/cad", async (req, res) => {
     const { name, email, password } = req.body;
     await Usuario.create(req.body)
     .then(()  => { 
@@ -68,6 +69,24 @@ app.post("/user", async (req, res) => {
         })
     })
     .catch(() => {
+        return res.status(400).json({
+            erro: true,
+            mensagem: ":( Não salvo"
+        });
+    });
+});
+/**** Cadastra com Bcryptjs  */
+app.post("/user", async (req, res) => {
+    var dados = req.body;
+    dados.password = await bcrypt.hash(dados.password, 8);
+
+    await Usuario.create(dados)
+    .then(()  => { 
+        return res.json({
+            erro: false,
+            mensagem: "Usuário Cadastrado com sucesso!"
+        })
+    }).catch(() => {
         return res.status(400).json({
             erro: true,
             mensagem: ":( Não salvo"
@@ -84,11 +103,29 @@ app.put("/user", async (req, res) => {
                 erro: false,
                 mensagem: "Atualizado com sucesso"
             });
-
         }).catch(() => {
             return res.status(400).json({
                 erro: true,
                 mensagem: ":( Não fui atualizado!"
+        });
+    });
+});
+/**** Atualiza Senha de um registro  */
+app.put("/user-senha", async (req, res) => {
+    const {id, password} = req.body;
+
+    var senhaCrypt = await bcrypt.hash(password, 8);
+
+    await Usuario.update({password: senhaCrypt}, {where: {id}})
+        .then(() => {  
+            return res.json({
+                erro: false,
+                mensagem: "Senha Atualizada com sucesso!"
+            });
+        }).catch(() => {
+            return res.status(400).json({
+                erro: true,
+                mensagem: ":( Não conseguimos atualizar!"
         });
     });
 });
