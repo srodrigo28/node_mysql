@@ -146,6 +146,28 @@ app.delete("/user/:id", async (req, res) => {
         });
     });
 });
+/*** Fazendo Login */
+app.post('/login', async (req, res)=> {
+    const usuario = await Usuario.findOne({ 
+        attributes: ['id', 'name', 'email', 'password'],
+        where: {email: req.body.email}});
+    if( usuario === null){
+        return res.status(400).json({
+            erro: true,
+            mensagem: "Erro: Usuário não encontrato!"
+        });
+    }
+    if(!(await bcrypt.compare(req.body.password, usuario.password))){
+        return res.status(400).json({
+            erro: true,
+            mensagem: "Erro: Senha Inválida"
+        });
+    }
+    return res.json({
+        erro: false,
+        mensagem: "Login realizado com sucesso!"
+    })
+})
 
 app.listen(8080, () => {
     console.log("Servidor iniciado na porta 8080")

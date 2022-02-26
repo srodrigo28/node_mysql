@@ -10,6 +10,7 @@
 * [x] Sequelize | npm i --save sequelize
 * [x] Mysql     | npm i --save mysql2
 * [x] Bcrypt    | npm i --save bcryptjs
+* [x] JsonWebToken | npm i --save jsonwebtoken
 
 ### Sequelize
 * Principais bancos
