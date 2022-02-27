@@ -147,63 +147,63 @@ app.delete("/user/:id", async (req, res) => {
         });
     });
 });
-/*** Fazendo Login */app.post('/login', async (req, res) => {
-    const user = await Usuario.findOne({
+/*** Fazendo Login */
+app.post('/login', async (req, res) => {
+    const usuario = await Usuario.findOne({
         attributes: ['id', 'name', 'email', 'password'],
-        where: {
-            email: req.body.email
-        }
+        where: {email: req.body.email}
     });
-    if (user === null) {
+    if(usuario === null){ // verifica se o usuário existe
         return res.status(400).json({
             erro: true,
-            mensagem: "Erro: Usuário não encontrado!"
+            mensagem: "Erro :( Usuário não encontrado!"
+        });
+    };
+    if(!(await bcrypt.compare(req.body.password, usuario.password))){ // verifica a senha é correta!
+        return res.status(400).json({
+            erro: true,
+            mensagem: "Erro :( Senha inválida do Usuário!"
         });
     };
 
-    if (!(await bcrypt.compare(req.body.password, user.password))) {
-        return res.status(400).json({
-            erro: true,
-            mensagem: "Erro: Senha inválida!"
-        });
-    };
+    const chave = "33787929-f17e-4c3c-9551-b0ef03791a1d";
 
-    var token = jwt.sign({ id: user.id }, '583a3549456251362c5a21314245576f', {
-        //expiresIn: 600 // 10min
-        expiresIn: '7d', // 7 dia
-    });
+    var token = jwt.sign({id: usuario.id}, chave, {
+        expiresIn: '7d' // expira a chave em 7 dis.
+    })
 
-    return res.json({
+    return res.json({ // Sucesso passou pela validação
         erro: false,
-        mensagem: "Login realizado com sucesso!",
+        mensagem: " :) Login realizado com sucesso! ",
         token
     });
 });
 
-async function validarToken(req, res, next) {
-    //return res.json({messagem: "Validar token"});
+async function validarToken(req, res, next){
+    // return res.json({ mesagem: "Carregar token "});
     const authHeader = req.headers.authorization;
     const [bearer, token] = authHeader.split(' ');
 
-    if (!token) {
+    if(!token){
         return res.status(400).json({
             erro: true,
-            mensagem: "Erro: Necessário realizar o login para acessar a página!"
+            mensagem: "Erro: :( acesso negado falta a chave de acesso!"
         });
     };
-
-    try {
-        const decoded = await promisify(jwt.verify)(token, '583a3549456251362c5a21314245576f');
-        req.userId = decoded.id;
-
+    try{
+        const decoded = await promisify(jwt.verify(token, chave));
+        req.UsuarioId = decoded.id;
         return next();
-    } catch (err) {
-        return res.status(401).json({
+    }catch(err){
+        return res.status(400).json({
             erro: true,
-            mensagem: "Erro: Necessário realizar o login para acessar a página!"
-        });
+            messagem: "Erro: :( chave não é válida"
+        })
     }
-};
+    //return res.json({messagem: "Chave gerada: " + token });
+    return res.json({messagem: token });
+    // return next();
+}
 
 app.listen(8080, () => {
     console.log("Servidor iniciado na porta 8080")
