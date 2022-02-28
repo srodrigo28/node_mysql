@@ -68,7 +68,7 @@ app.get("/clientes", (req, res) => {  //Lista Todos Clientes
     })
 })
 
-app.post("/contato", (req, res) => {
+app.post("/contato", validaContato, (req, res) => {
     var nome  = req.body.nome;
     var idade = req.body.idade;
     var sexo  = req.body.sexo
@@ -78,7 +78,6 @@ app.post("/contato", (req, res) => {
         sexo: sexo
     })
 })
-
 
 app.post("/contato1", (req, res) => {
     var nome  = req.body.nome;
@@ -97,6 +96,92 @@ app.post("/contato2", (req, res) => {
         nome, idade, sexo
     })
 })
+
+app.put("/contato/:id", (req, res) => { // 1. Put
+    const id = req.params.id;
+    return res.json({
+        id: id
+    });
+})
+
+app.put("/contato2/:id", (req, res) => { // 2. Put
+    const { id } = req.params;
+    return res.json({
+        id
+    });
+})
+
+app.put("/contato3/:id", (req, res) => { // 3. Put
+    const { id } = req.params;
+    return res.json({
+        id
+    });
+})
+
+app.put("/contato4/:id", (req, res) => { // 4. Put
+    const { id } = req.params;
+    const { nome } = req.body;
+    const { email } = req.body;
+    return res.json({
+        id, 
+        nome: nome, 
+        email: email
+    });
+})
+
+app.put("/contato5/:id", (req, res) => { // 5. Put
+    const { id } = req.params;
+    const { nome, email } = req.body;
+    return res.json({
+        id,  // Aqui passagem req.param
+        nome, email // Aqui passagem req.Body
+    });
+})
+
+app.put("/contato6", (req, res) => { // 6. Put sem param
+    const { id, nome, email } = req.body;
+    return res.json({
+        id, nome, email // Aqui passagem req.Body
+    });
+})
+
+app.delete("/contato/:id", (req, res) => { // 1. Delete sem param
+    const id = req.params.id;
+    return res.json({
+        mesagem: "Excluido com sucesso"
+    });
+})
+
+app.delete("/contato2/:id", (req, res) => { // 2. Delete sem param
+    const { id } = req.params;
+    return res.json({
+        id,
+        mesagem: "Excluido com sucesso"
+    });
+})
+
+app.delete("/contato3", (req, res) => { // 3. Delete sem param
+    const { id } = req.body;
+    return res.json({
+        id, // Aqui passagem req.Body
+        mesagem: "Excluido com sucesso"
+    });
+})
+
+// app.use((req, res, next) => {
+//     console.log("Acessou a rota Midware");
+//     next();
+// });
+
+function validaContato(req, res, next){
+    if(!req.body.idade){
+        return res.json({
+            erro: true,
+            mensagem: "Necessário informar o e-mail!"
+        });
+    };
+    return next();
+}
 
 app.listen(8080, () => {
     console.log("Servidor Rodando na porta 8080");
